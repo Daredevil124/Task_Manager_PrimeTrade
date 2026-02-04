@@ -1,15 +1,27 @@
-const task=require('../models/task');
-const user=require('../models/auth');
-const addTask=async(req,res)=>{
-    try{
-    const [email,date,description,status,title]=req.body;
-    const userData=await user.findOne({email:email});
-    const newTask=new task({userId:userData._id,Title:title,dueDate:date,description:description,status:status});
-    await newTask.save();
-    res.status(200).send('Task added Successfully');
-    }
-    catch(error){
-        res.status(500).send("Server Error ",error);
+const Task = require('../models/task');
+
+const addTask = async (req, res) => {
+    try {
+        const { title, date, description, status } = req.body; // Fixed destructuring
+        const userId = req.user.id; // Get from JWT
+
+        if (!title || !date || !status) {
+             return res.status(400).json({ message: "Title, Date and Status are required" });
+        }
+
+        const newTask = new Task({
+            userId: userId,
+            Title: title,
+            dueDate: date,
+            description: description,
+            status: status
+        });
+        
+        await newTask.save();
+        res.status(201).json({ message: 'Task added Successfully', task: newTask });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
 }
-module.exports=addTask;
+module.exports = addTask;
