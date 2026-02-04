@@ -2,8 +2,8 @@ const Task = require('../models/task');
 
 const addTask = async (req, res) => {
     try {
-        const { title, date, description, status } = req.body; // Fixed destructuring
-        const userId = req.user.id; // Get from JWT
+        const { title, date, description, status } = req.body; 
+        const userId = req.user.id; 
 
         if (!title || !date || !status) {
              return res.status(400).json({ message: "Title, Date and Status are required" });

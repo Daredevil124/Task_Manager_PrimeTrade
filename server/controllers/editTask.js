@@ -2,12 +2,10 @@ const Task = require('../models/task');
 
 const editTask = async (req, res) => {
     try {
-        const { id, status, description, dueDate, Title } = req.body; // Expecting task ID in body or params? Ideally params.
-        // Let's support ID in body for now as per previous logic, but strictly checking ownership.
-        
+        const { id, status, description, dueDate, Title } = req.body; 
         const userId = req.user.id;
         
-        // Find task by ID and ensure it belongs to the user
+       
         const taskData = await Task.findOne({ _id: id, userId: userId });
 
         if (!taskData) {

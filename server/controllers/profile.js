@@ -2,7 +2,7 @@ const User = require('../models/auth');
 
 const getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password'); // Exclude password
+        const user = await User.findById(req.user.id).select('-password'); 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -15,9 +15,9 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-        const { Name } = req.body; // Only allowing Name update as requested
+        const { Name } = req.body; 
         
-        // Find user by ID (from token)
+        
         let user = await User.findById(req.user.id);
         
         if (!user) {
